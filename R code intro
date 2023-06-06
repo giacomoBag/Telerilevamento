@@ -1,1 +1,28 @@
-#script di prova per il corso di telerilevamento geo ecologiico
+#script corso di telerilevamento geo ecologiico
+install.packages("raster")
+library(raster)
+
+#Settaggio cartella di lavoro: con i file raster è importante ricaricarli tutte le volte
+#perchè i dati raster su R sono temporanei
+# i comandi sono setwd("percorso cartella"), con cui decidiamo quale sarà la cartella di lavoro
+#su windows sranno da invertire \ con / per il percorso file corretto
+#getwd ci dice il nome della cartella di lavoro
+setwd("C:/Users/giaco/OneDrive/Documenti/UNIBO/Telerilevamento geo-ecologico/LabR")
+
+#importazione dati raster
+l2011 <- brick("p224r63_2011_masked")
+l2011
+#l'oggetto creato è di classe rasterbrick, la dimensione ci dà numero di righe, di colonne, di celle(ovvero i pixel con il loro dati di riflettanza) e in fine il numero di layer creati 
+#la risoluzione è 30x30m
+#la sorgente del dato è il raster p224r63_2011.grd nel quale troviamo i 7 layer (o bande):
+#B1_sre, B2_sre, B3_sre, B4_sre, B5_sre, B6_bt, B7_sre (sre = spectral reflection, bt = banda del termico)
+#La riflettanza ha valori che vanno da 0 a 1 (1 rifletto tutto)
+
+#PLOTTARE questo raster è facile perchè righe e colonne sono già contenute all'interno del raster stesso percui basterà richiamare l'oggetto creato.
+plot(l2011)
+#creeremo una legenda adhoc
+#inizieremo con la funzione colorRampPalette(c("black","grey", "light grey")) (100)
+#con questo comando creeremo un vettore di di 100 colori che vanno dal nero al grigio chiaro. 
+cl <- colorRampPalette(c("black","grey", "light grey")) (100)
+#a questo punto inserisco nell'argomento col di plot la nostra palette:
+plot(l2011, col=color)
