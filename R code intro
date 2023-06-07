@@ -25,4 +25,53 @@ plot(l2011)
 #con questo comando creeremo un vettore di di 100 colori che vanno dal nero al grigio chiaro. 
 cl <- colorRampPalette(c("black","grey", "light grey")) (100)
 #a questo punto inserisco nell'argomento col di plot la nostra palette:
-plot(l2011, col=color)
+plot(l2011, col=cl)
+
+#LEZIONE 18/03/2022
+
+#nel lendsat ETM+ avremo e lavoreremo con diverse bande:
+#b1 banda del blu 
+#b2 banda del verde
+#b3 banda del rosso 
+#b4 banda del infrarosso o vicino NIR
+
+#PLOT DI UNA SINGOLA BANDA: per plottare l'immagine di una sola banda andremo a richiamare il nome della stessa
+#immagine della banda del blu, nome: B1_sre, per prenderla dentro l2011 uso "$" che lega gli oggetti tra loro 
+plot(l2011 $B1_sre, col=cl)
+
+#oppure posso recuperare l'elemento numero [[n]] all'interno del nostro data set, in questo caso l'elemento [[1]]
+plot(l2011 [[1]], col=cl)
+
+#se voglio cambiare la palette di colori posso usare il blu per la banda blu
+clb <- colorRampPalette(c("dark blue","blue", "light blue")) (100)
+plot(l2011 [[1]], col=clb)
+
+#esportare un file .pdf da R alla cartella in cui stiamo lavorando:
+pdf("banda1.pdf")           #la funzione pdf esporta il plot che viene generato subito dopo
+plot(l2011 [[1]], col=clb)
+dev.off()       #chiuderà il grafico appena aperto
+
+# se volessi CAMBIARE LA CARTELLA di DESTINAZIONE basterà cambiare il percorso file:
+
+pdf("C:/Users/giaco/OneDrive/Documenti/UNIBO/Telerilevamento geo-ecologico/banda1.pdf")
+plot(l2011 [[1]], col=clb)
+dev.off()
+
+#se volessi CAMBIARE IL PNG uso "bla bla.png"
+#per esportare il data set uso - write raster esportando dei dati .tif o simili
+
+
+#PLOTTARE INSIEME b1 e b2
+clg <- colorRampPalette(c("dark green","green", "light green")) (100)
+plot(l2011 [[2]], col=clg)
+
+#utilizzerò un multiframe creandolo con la funzione par, questa funzione creerà una riga e due colonne su cui potranno essere impostate le nostre immagini
+#così avremo una predisposizione a mettere i plot uno affianco all'altro: su una riga e due colonne
+
+pdf("multiframe.pdf")  #esporterà l'immagine che andrò a creare
+par(mfrow = c(1,2) ) #aumentando righe e colonne aumento il numero di immagini che metto in ordine
+
+#per inserire le immagini in questo multiframe semplicemente richiamerò in ordine le immagini che voglio inserire:
+plot(l2011 [[1]], col=clb)
+plot(l2011 [[2]], col=clg)
+dev.off() #richiude tutto così non avremo sempre le immagini una affianco all'altra
