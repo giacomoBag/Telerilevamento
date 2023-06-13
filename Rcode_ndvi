@@ -1,0 +1,50 @@
+#LEZIONE 25/03/2022
+#INDDICE SPETTRALE o indice di vegetazione
+#l'indice di vegetazione coglie il cambio di colore di una pianta che in caso di stress o particolari periodi può cambiare il proprio spettro di emissione
+#NDVI: normalized differetion vegetation index. Consiste nella differenza tra due bande 
+
+install.packages("raster")
+install.packages("rgdal")
+library(raster)
+library(rgdal)
+setwd("C:/Users/giaco/OneDrive/Documenti/UNIBO/Telerilevamento geo-ecologico/LabR")
+setwd("~/UNIBO/Telerilevamento geo-ecologico/LabR")
+#importiamo e nominiamo le immagini
+l1992 <- brick("defor1_.jpg")
+l1992
+
+
+plotRGB(l1992, r=1, g=2, b=3, stretch="lin") #nell'immagine in analisi la r è la NIR mentre r=2 e b=3
+#plotRGB(l1992, r=4, g=3, b=2, stretch="lin") probabilmente il dato originale è stata rielaborata utilizzando questo codice
+#Lavorando noi su un immagine esportata r,g e b sono tornati ad essere 1 2 e 3
+#layer 1 = NIR
+#leyer 2 = red
+#leyer 3 = green
+
+#importo l'altra immagine
+l2006 <- brick("defor2_.jpg")
+l2006
+plotRGB(l2006, r=1, g=2, b=3, stretch="lin")
+
+par(mfrow=c(2,1))
+plotRGB(l1992, r=1, g=2, b=3, stretch="lin") 
+plotRGB(l2006, r=1, g=2, b=3, stretch="lin")
+
+#Calcolo del DVI
+#cerchiamo di capire lo stato di salue della vegetazione facendo NIR-red da dove otterremo un massimo di 255 e un minimo di 0
+dvi1992 = l1992[[1]] -  l1992[[2]] #il primo elemento dell'immagine l1992 abbiamo detto essere il Nir mentre il secondo è il red
+
+#per plottarlo
+par(mfrow=c(2,1))
+cl <- colorRampPalette(c("darkblue", "yellow","red", "black"))(100)
+plot(dvi1992, col=cl) #la vegetaione in salute è rosso scuro, il giallo è male, la scala arriva fino a 255
+dev.off
+
+dvi2006 = l2006[[1]] -  l2006[[2]] #si può utilizzare anche i nomi degli elementi che ci interessano con $name
+plot(dvi2006, col=cl)
+#l'immagini 1992-2006 mostrano il dvi nelle due annate dove un valore molto basso rappresenta la deforestazione
+#posso fare un ulteriore differenza tra il dvi1992 e il dvi2006 per mettere ulteriormente in evidenza i cambiamenti
+dvi_diff = dvi1992 - dvi2006
+cld <- colorRampPalette(c("blue", "white", "red"))(100)
+plot(dvi_diff, col=cld) #le zone rosse sono le zone in cui c'è stata una fortissima deforestazione e dove la differenza tra i dvi è massima
+#i valori sui bordi sono coordinate x y fittizie, la barra della scala cromatica invece ci dà l'informazione di deforestazione
