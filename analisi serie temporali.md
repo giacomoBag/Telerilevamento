@@ -69,6 +69,7 @@ plotRGB (tgr, r=1, g=2, b=3, stretch="lin") #in questo caso avviene la sovrappos
 library(raster)
 setwd("~/UNIBO/Telerilevamento geo-ecologico/LabR/EN")
 
+# impoerto due immagini su 13 delle presenti nella cartella
 en01 <- raster("EN_0001.png") 
 
 cl <- colorRampPalette(c('red','orange','yellow'))(100) # 
@@ -77,23 +78,23 @@ plot(en01, col=cl)
 en13 <- raster("EN_0013.png")
 plot(en13, col=cl)
 
-# Let's import the whole set (altogether!)
+# imprto tutte le immagini presenti nella cartella 
 
 # Exercise: import the whole as in the Greenland example
 # by the following steps: list.files, lapply, stack 
 
-rlist <- list.files(pattern="EN")
+rlist <- list.files(pattern="EN") #estraggo i file che abbiano un pattern comune
 
 # lapply(X,FUN)
 rimp <- lapply(rlist, raster)
 
-# stack
+# stack mi permetterà si mettere insieme le immagini e plottarle in seguito tutti insieme
 en <- stack(rimp)
 
-# plot everything
+# posso plottare tutto 
 plot(en, col=cl)
 
-# Exercise: plot EN01 besides EN13
+# oppure decidere di plottare solo alcuni [[elementi]] presenti in en 
 par(mfrow=c(1,2))
 plot(en[[1]], col=cl)
 plot(en[[13]], col=cl)
