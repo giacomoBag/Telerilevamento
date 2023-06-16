@@ -48,3 +48,65 @@ dvi_diff = dvi1992 - dvi2006
 cld <- colorRampPalette(c("blue", "white", "red"))(100)
 plot(dvi_diff, col=cld) #le zone rosse sono le zone in cui c'è stata una fortissima deforestazione e dove la differenza tra i dvi è massima
 #i valori sui bordi sono coordinate x y fittizie, la barra della scala cromatica invece ci dà l'informazione di deforestazione
+
+
+#LEZIONE 31/03/2022
+
+#STANDARDIZZARE UN diff_DVI, ovvero facciamo una normalizzazione della somma delle due bande
+#se elaborassimo due bande create con un numero di bit differente avremmo una scala di valori molto diversa
+#su un immagine a 8 bit i valori possibili vanno da 0 a 255
+#su un immagine a 16 bit avremmo invece 65536 valori possibi percui il confronto dei valori e dei colori non avrebbero lo stesso significato
+
+#il range DVI a 8 bit: -255 a 255
+#il range NDVI a 8 bit: -1 a 1
+
+#il rage DVI a 16 bit: -65535 a 65535
+#il range NDVI a 16 bit: -1 a 1
+
+#con i NDVI posso fare il confronto tra qualsiasi immagine
+
+#NDVI_1992
+dvi1992 = l1992 [[1]] - l1992[[2]] #differenza NIR e red
+
+Ndvi1992 = dvi1992 / (l1992 [[1]] + l1992[[2]]) #differenza NIR-red diviso la loro somma
+Ndvi1992
+dvi1992
+
+#creazione multiframe con e l'immagine NDVI
+
+par(mfrow=c(2,1))
+cl <- colorRampPalette(c("darkblue", "yellow","red", "black"))(100)
+plotRGB(l1992, r=1, g=2, b=3, stretch="lin")
+plot(Ndvi1992, col=cl)
+#nell'immagini il valore minimo -1 è l'acqua (blu) che però non compare poichè l'acqua è ricca in sedimento
+
+
+#NDVI_2006
+Ndvi2006 = dvi2006 / (l2006 [[1]] + l2006[[2]]) 
+
+#creazione multiframe con e l'immagine NDVI
+par(mfrow=c(2,1))
+plot(Ndvi1992, col=cl)
+plot(Ndvi2006, col=cl)
+#ndvi vicino intorno allo zero rappresentano suoli agricoli
+
+
+
+#indici spettrali automatici utilizzando la funzione "spectralIndices"
+install.packages("RStoolbox")
+library(RStoolbox)
+si1992 <- spectralIndices (l1992, g=3, r=2, nir=1)
+plot (si1992, col=cl)
+#verrebbero plottati tutti gli indici calcolabili con le bande RGB
+#interessante l'indice NDWI che calcola la quantità di acqua presente nei singoli pixel
+
+
+##RASTERDIV
+install.packages("rasterdiv")
+library(rasterdiv)
+plot(copNDVI)
+#plotta una mappa del NDVI a scala globale con un valore medio del periodo 199*-2017
+
+
+
+
