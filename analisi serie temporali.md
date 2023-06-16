@@ -9,7 +9,7 @@
 
 library(raster)
 setwd("~/UNIBO/Telerilevamento geo-ecologico/LabR/greenland")
-# importiamo tutte le immagini dalla cartella in cui abbiamo 4 dati diversi;
+#importiamo tutte le immagini dalla cartella in cui abbiamo 4 dati diversi;
 #lst 2000
 #lst 2005
 #lst 2015
@@ -19,7 +19,7 @@ lst2000 <- raster("lst_2000.tif")
 lst2000 #è un immagine a 16bit perchè i values arrivano a 65535
 plot(lst2000) #vedo la temperature della groellandia
 
-# IMPORTO UN DATO ALLA VOLTA
+#IMPORTO UN DATO ALLA VOLTA
 lst2005 <- raster("lst_2005.tif")
 lst2010 <- raster("lst_2010.tif")
 lst2015 <- raster("lst_2015.tif")
